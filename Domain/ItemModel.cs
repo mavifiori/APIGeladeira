@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -19,8 +20,10 @@ namespace Domain
         [Range(1, 3, ErrorMessage = "O container deve ser um valor entre 1 e 3.")]
         public int Container { get; set; }
 
+        //[Key]
+        //[Range(1, 3, ErrorMessage = "O container deve ser um valor entre 1 e 3.")]
         [Key]
-        [Range(1, 3, ErrorMessage = "O container deve ser um valor entre 1 e 3.")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
     }
 }

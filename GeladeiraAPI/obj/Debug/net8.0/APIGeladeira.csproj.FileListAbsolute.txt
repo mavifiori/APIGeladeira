@@ -20,6 +20,7 @@ C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.Identity.Client.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
@@ -117,9 +118,11 @@ C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Application.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Domain.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Infrastructure.dll
+C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Services.dll
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Application.pdb
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Domain.pdb
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Infrastructure.pdb
+C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\bin\Debug\net8.0\Services.pdb
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\obj\Debug\net8.0\APIGeladeira.csproj.AssemblyReference.cache
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\obj\Debug\net8.0\APIGeladeira.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\vicsf\source\repos\curso #c\GeladeiraAPI\GeladeiraAPI\obj\Debug\net8.0\APIGeladeira.AssemblyInfoInputs.cache

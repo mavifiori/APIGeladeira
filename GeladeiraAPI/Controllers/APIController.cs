@@ -3,29 +3,34 @@ using AutoMapper;
 using Domain;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
+using static Infrastructure.GeladeiraRepository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIGeladeira.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class APIController : ControllerBase
+    public class ItemController : ControllerBase
     {
+        private readonly IService<ItemModel> _itemService;
         private readonly GeladeiraRepository _repositorio;
         private readonly IMapper _mapper;
 
-        public APIController(GeladeiraRepository repositorio, IMapper mapper)
+
+
+        public ItemController(IService<ItemModel> itemService, GeladeiraRepository repositorio, IMapper mapper)
         {
+            _itemService = itemService;
             _repositorio = repositorio;
             _mapper = mapper;
         }
 
-        // GET: api/API
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemModel>>> ObterItens()
+        public async Task<IActionResult> ObterTodos()
         {
-            try
-            {
-                var itens = await _repositorio.ObterItensAsync();
+            try {
+                var itens = await _itemService.ObterTodosAsync();
                 if (!itens.Any())
                 {
                     return NoContent();
@@ -38,71 +43,67 @@ namespace APIGeladeira.Controllers
             }
         }
 
-        [HttpGet("buscar/{id}")]
-        public async Task<ActionResult<ItemModel>> BuscarPorId(int id)
+
+
+        [HttpGet("Buscar/{id}")]
+        public async Task<IActionResult> ObterPorId(int id)
         {
             try
             {
-                var itemExistente = await _repositorio.ObterItemPorIdAsync(id);
-                if (itemExistente != null)
+                var item = await _itemService.ObterPorIdAsync(id);
+
+                if (item == null)
                 {
-                    return Ok(itemExistente);
+                    return NotFound($"O item de ID: {id} não foi encontrado.");
                 }
-                return NotFound($"O item de ID: {id} não foi encontrado.");
+
+                return Ok(item);
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return StatusCode(500, $"Erro no servidor: {e.Message}");
             }
         }
 
-        // POST: api/API/adicionar
-        [HttpPost("adicionar")]
-        public async Task<ActionResult> AdicionarItem([FromBody] AdicionarGeladeiraDTO dto)
+        [HttpPut("adicionar")]
+        public async Task<IActionResult> Adicionar([FromBody] ItemModel item)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);  
+            }
+
             try
             {
-                var item = _mapper.Map<ItemModel>(dto);
-
-                var itemAdicionado = await _repositorio.AdicionarItemAsync(item);
-                if (itemAdicionado != null)
+                var novoItem = await _itemService.AdicionarAsync(item);
+                if (novoItem == null)
                 {
-                    return Ok(itemAdicionado);
+                    return BadRequest("Erro ao adicionar item.");
                 }
-                return BadRequest("Erro ao adicionar item.");
+                return CreatedAtAction(nameof(ObterPorId), new { id = novoItem.Id }, novoItem);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return StatusCode(500, e.Message);
+                return StatusCode(500, $"Erro no servidor: {ex.Message}");
             }
         }
 
-        // PUT: api/API/{id}
         [HttpPut("atualizar")]
-        public async Task<IActionResult> AtualizarItem([FromBody] ItemModel item)
+        public async Task<IActionResult> Atualizar(int id, [FromBody] ItemModel item)
         {
-            try
-            {
-                var itemAtualizado = await _repositorio.AtualizarItemAsync(item);
-                if (itemAtualizado != null)
-                {
-                    return Ok(itemAtualizado);
-                }
-                return BadRequest("Erro ao atualizar item.");
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
+            if (id != item.Id) return BadRequest("Erro ao atualizar item.");
+            var itemAtualizado = await _itemService.AtualizarAsync(item);
+            if (itemAtualizado == null) return NotFound();
+            return Ok(itemAtualizado);
         }
 
-        // DELETE: api/API/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> ExcluirItem(int id)
+        public async Task<IActionResult> Remover(int id)
         {
+
             try
             {
-                await _repositorio.RemoverItemAsync(id);
+                await _itemService.RemoverAsync(id);
                 return Ok("Item removido com sucesso.");
             }
             catch (Exception e)
@@ -110,5 +111,5 @@ namespace APIGeladeira.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-    }
+    } 
 }

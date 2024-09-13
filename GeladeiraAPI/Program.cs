@@ -1,6 +1,12 @@
 using Application.Mappings;
 using Infrastructure;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using static Infrastructure.GeladeiraRepository;
+using Microsoft.Extensions.DependencyInjection;
+using Services.Interfaces;
+using Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +22,8 @@ builder.Services.AddDbContext<GeladeiraContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(typeof(GeladeiraMapping));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
 var app = builder.Build();
 

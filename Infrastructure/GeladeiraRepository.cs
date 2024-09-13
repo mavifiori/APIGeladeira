@@ -1,61 +1,54 @@
 ﻿using Domain;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
     public class GeladeiraRepository
     {
-        private GeladeiraContext _contexto;
-
-        public GeladeiraRepository(GeladeiraContext contexto)
+        public class Repository<T> : IRepository<T> where T : class
         {
-            _contexto = contexto;
-        }
+            private readonly GeladeiraContext _contexto;
+            private readonly DbSet<T> _dbSet;
 
-        public async Task<IEnumerable<ItemModel>> ObterItensAsync()
-        {
-            return await _contexto.Itens.ToListAsync();
-        }
-
-        public async Task<ItemModel> ObterItemPorIdAsync(int id)
-        {
-            var item = await _contexto.Itens.FindAsync(id);
-            if (item != null)
+            public Repository(GeladeiraContext contexto)
             {
-                return item;
-            }
-            return null;
-        }
-
-        public async Task<ItemModel> AdicionarItemAsync(ItemModel item)
-        {
-            _contexto.Itens.Add(item);
-            await _contexto.SaveChangesAsync();
-
-            return item;
-        }
-
-        public async Task<ItemModel> AtualizarItemAsync(ItemModel item)
-        {
-            var verificarItem = await ObterItemPorIdAsync(item.Id);
-            if (verificarItem == null)
-            {
-                return null;
+                _contexto = contexto;
+                _dbSet = _contexto.Set<T>();
             }
 
-            _contexto.Entry(verificarItem).CurrentValues.SetValues(item);
-            await _contexto.SaveChangesAsync();
-            return item;
-        }
-
-        public async Task RemoverItemAsync(int id)
-        {
-            var item = await ObterItemPorIdAsync(id);
-
-            if (item != null)
+            public async Task<IEnumerable<T>> ObterTodosAsync()
             {
-                _contexto.Itens.Remove(item);
+                return await _dbSet.ToListAsync();
+            }
+
+            public async Task<T> ObterPorIdAsync(int id)
+            {
+                return await _dbSet.FindAsync(id);
+            }
+
+            public async Task<T> AdicionarAsync(T entidade)
+            {
+                await _dbSet.AddAsync(entidade);
                 await _contexto.SaveChangesAsync();
+                return entidade;
+            }
+
+            public async Task<T> AtualizarAsync(T entidade)
+            {
+                _dbSet.Update(entidade);
+                await _contexto.SaveChangesAsync();
+                return entidade;
+            }
+
+            public async Task RemoverAsync(int id)
+            {
+                var entidade = await ObterPorIdAsync(id);
+                if (entidade != null)
+                {
+                    _dbSet.Remove(entidade);
+                    await _contexto.SaveChangesAsync();
+                }
             }
         }
     }
