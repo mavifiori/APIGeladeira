@@ -65,7 +65,7 @@ namespace APIGeladeira.Controllers
             }
         }
 
-        [HttpPut("adicionar")]
+        [HttpPost("adicionar")]
         public async Task<IActionResult> Adicionar([FromBody] ItemModel item)
         {
             if (!ModelState.IsValid)
